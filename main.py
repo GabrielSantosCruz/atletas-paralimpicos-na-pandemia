@@ -22,7 +22,7 @@ while True: # depois tirar esse True aqui klsadjksa
         name = input("Nome do Atleta: ")
         age = validation_int(input("Digite a idade do Atleta: "))
         gender = validation_str(input("Sexo do Atleta: [M/F] "), 'MF')
-        print("Digite apenas o número da opção correspondente a dezficiência que o Atleta possui")
+        print("Digite apenas o número da opção correspondente a deficiência que o Atleta possui")
         paralisy = cadastrar_lista(deficiency)
         covid = validation_str(input("Foi diagnosticado com Covid-19?: [S/N] "), 'SN')
         sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
@@ -38,6 +38,8 @@ while True: # depois tirar esse True aqui klsadjksa
             medal['medal_bronze'] = validation_int(input("Quantas medalhas de bonze: "))
 
         # criando a classe e salvando no arquivo
-        dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, sports_quant, medal, modalidades))
+        dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, covid, sports_quant, medal, modalidades))
         with open('cadastros.json', 'a', encoding='utf-8') as cadastrar:
             cadastrar.write(f'{dados}\n')
+    if option == 2:
+        exibir_cadastros('cadastros.json')
