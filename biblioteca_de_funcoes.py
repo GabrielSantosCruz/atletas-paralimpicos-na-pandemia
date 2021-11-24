@@ -41,3 +41,16 @@ def exibir_cadastros(nome_arquivo):
         for numero, cadastro in enumerate(arquivo):
             atleta = jp.decode(cadastro)
             print(numero+1, atleta.cpf, atleta.name, atleta.age, atleta.gender, atleta.paralisy, atleta.covid, atleta.modalidade, atleta.medal)
+
+def list_cpfs(nome_arquivo):
+    lista = []
+    with open(nome_arquivo, 'r') as cadastrados:
+        for cpf in cadastrados:
+            cpfs = jp.decode(cpf)
+            lista.append(cpfs.cpf)
+
+def validation_cpf(cpf, lista_cpfs):
+    while cpf in lista_cpfs:
+        print('Cpf já cadastrado!')
+        cpf = int(input("Cpf: "))
+    return cpf

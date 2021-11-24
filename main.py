@@ -7,17 +7,19 @@ deficiency = ['Deficiência mental', 'Visual', 'Amputação', 'Deficiência fís
 modalidades = dados = []
 medal_gold = medal_silver = medal_bronze = 0
 medal = {}
-
+option = 1
 # inicio do programa
-while True: # depois tirar esse True aqui klsadjksa
+while option != 5: # depois tirar esse True aqui klsadjksa
     print('''OPÇÕES:
 [1] - Cadastrar
 [2] - Editar Cadastro
 [3] - Excluir Cadastro
-[4] - Gerar Relatório''')
+[4] - Gerar Relatório
+[5] - Sair''')
     #inputs
-    option = validation_limited_int(4,(input("Digite a opção: ")))
+    option = validation_limited_int(5,(input("Digite a opção: ")))
     if option == 1:
+        cpfs = list_cpfs('cadastros.json')
         cpf = validation_cpf(input("Digite o cpf do Atleta: "))
         name = input("Nome do Atleta: ")
         age = validation_int(input("Digite a idade do Atleta: "))
