@@ -8,6 +8,11 @@ def validation_int(var): # validar números inteiros
         var = input('Erro, Digite apenas números: ')
     return int(var)
 
+def validation_cpf(cpf): # validar se o cpf digitado é considerado válido
+    while not cpf.isdigit() or len(cpf) != 11:
+        cpf = input("Erro! Cpf inválido, digite novamente: ")
+    return cpf
+
 def cadastrar_lista(lista): # usa uma lista com as opções para transformar em opções númericas para cadastrar
 
     for numero, nome in enumerate(lista): # transforma em opção
