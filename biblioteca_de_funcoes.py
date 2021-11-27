@@ -17,6 +17,7 @@ def validation_limited_int(limitation, num):
     while not num.isdigit or int(num) > limitation:
         num = input("Erro, digite um número válido: ")
     return int(num)
+    
 def cadastrar_lista(lista): # usa uma lista com as opções para transformar em opções númericas para cadastrar
     for numero, nome in enumerate(lista): # transforma em opção
         print(f'[{numero}] - {nome}')
@@ -44,13 +45,17 @@ def exibir_cadastros(nome_arquivo):
 
 def list_cpfs(nome_arquivo):
     lista = []
-    with open(nome_arquivo, 'r') as cadastrados:
-        for cpf in cadastrados:
-            cpfs = jp.decode(cpf)
-            lista.append(cpfs.cpf)
-
+    try:
+        with open(nome_arquivo, 'r') as cadastrados:
+            for cpf in cadastrados:
+                cpfs = jp.decode(cpf)
+                lista.append(cpfs.cpf)
+    except:
+        None
 def validation_cpf(cpf, lista_cpfs):
-    while cpf in lista_cpfs:
-        print('Cpf já cadastrado!')
-        cpf = int(input("Cpf: "))
-    return cpf
+    try:
+        while cpf in lista_cpfs:
+            print('Cpf já cadastrado!')
+            cpf = int(input("Cpf: "))
+    except TypeError:
+        return cpf
