@@ -32,15 +32,16 @@ while option != 5:
     option = validation_limited_int(4,(input("Digite a opção: ")))
     if option == 0:
         cpfs = list_cpfs('cadastros.json')
-        cpf = validation_cpf(input("Digite o cpf do Atleta: "), cpfs)
+        cpf = validation_cpf_digit(input("Digite o cpf do Atleta: "))
+        validation_cpf(cpf, cpfs)
         name = input("Nome do Atleta: ")
         age = validation_int(input("Digite a idade do Atleta: "))
         gender = validation_str(input("Sexo do Atleta: [M/F] "), 'MF')
         print("Digite apenas o número da opção correspondente a deficiência que o Atleta possui")
         paralisy = cadastrar_lista(deficiency)
         covid = validation_str(input("Foi diagnosticado com Covid-19?: [S/N] "), 'SN')
-        sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
 
+        sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
         print("Digite apenas o número da opção correspondente a modalidade que o atleta participou")
         # assim que pegar qual foi a modalidade, cadastrar as medalhas da mesma
         for i in range(sports_quant):
@@ -56,7 +57,7 @@ while option != 5:
             modality = Modalidade(modalidade, medals_gold, medals_silver, medals_bronze)
             modalidades.append(modality)
         # criando a classe e salvando no arquivo
-        dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, covid, sports_quant,modalidades))
+        dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, covid, modalidades))
         with open('cadastros.json', 'a', encoding='utf-8') as cadastrar:
             cadastrar.write(f'{dados}\n')
     elif option == 1:
