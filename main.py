@@ -16,7 +16,7 @@ import jsonpickle as jp
 sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
 deficiency = ['Deficiência mental', 'Visual', 'Amputação', 'Deficiência física']
 modalidades = dados = []
-medal_gold = medal_silver = medal_bronze = 0
+medals_gold = medals_silver = medals_bronze = 0
 medal = {}
 option = 1
 
@@ -49,7 +49,7 @@ while option != 5:
             modalidade = cadastrar_lista(sports)
             have_medal = validation_str(input("Ganhou alguma medalha?: [S/N] "), 'SN')
             #provavelmente vou ter que voltar aqui para ver o caso desa 
-            if have_medal == 'S':
+            if have_medal == 'Sim':
                 # falta separar as medalhas por modalidade
                 medals_gold = validation_int(input("Quantas medalhas de ouro: "))
                 medals_silver = validation_int(input("Quantas medalhas de prata: "))
@@ -62,3 +62,10 @@ while option != 5:
             cadastrar.write(f'{dados}\n')
     elif option == 1:
         exibir_cadastros('cadastros.json')
+    
+    elif option == 2:
+        exibir_cadastros('cadastros.json')
+        cpfs = list_cpfs('cadastros.json')
+        cpf_excluir = validation_cpf_digit(input("Digite o cpf do Atleta para excluí-lo: "))
+        validation_excluir_cpf(cpf_excluir, cpfs)
+        excluir_cadastro('cadastros.json', cpf_excluir)
