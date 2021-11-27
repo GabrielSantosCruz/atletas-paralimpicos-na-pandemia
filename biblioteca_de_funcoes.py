@@ -52,6 +52,10 @@ def exibir_cadastros(nome_arquivo): # função para exibir as informações de t
     except FileNotFoundError:
         print("Nenhum atleta foi cadastrado ainda")
 
+'''def exibir_modalidade(nome_arquivo):
+    with open(nome_arquivo, "r+", encoding='utf-8') as arquivo:
+        '''
+
 def exibir_modalidade(modality): # função para exibir todas as informações das modalidades em que o atleta foi cadastrado
     import jsonpickle as jp
     for num, modalidade in enumerate(modality):
@@ -77,7 +81,7 @@ def validation_cpf(cpf, lista_cpfs): # valida se o cpf digitado já foi cadastra
 def validation_excluir_cpf(cpf_excluir, lista_cpfs): # valida se o cpf digitado já foi cadastrado
     while cpf_excluir not in lista_cpfs:
         print('O cpf digitado não está cadastrado! Digite um cpf válido!')
-        cpf_excluir = int(input("Digite o cpf do Atleta para excluí-lo: "))
+        cpf_excluir = int(input("Digite o cpf do Atletao: "))
     return int(cpf_excluir)
 
 def excluir_cadastro(nome_arquivo, cpf_excluir):
@@ -90,3 +94,56 @@ def excluir_cadastro(nome_arquivo, cpf_excluir):
             if line.cpf != cpf_excluir: # verifica se é o a linha pra ser excluida
                 arquivo.write(f'{jp.encode(line)}\n') # grava as linhas que não são a que deve ser excluida
         arquivo.truncate()
+
+'''def editar_cadastro(nome_arquivo, cpf):
+    with open(nome_arquivo, 'r+', encoding='utf-8') as cadastros:
+        new_cadastro = cadastros.readlines()
+        cadastros.seek(0)
+        # alterar o cadastro
+        for line in new_cadastro:
+            line = jp.decode(line)
+            if line.cpf == cpf: # verifica se é a linha que deve ser editada
+                line.name = input("Nome: ")
+                line.altura = float(input("Altura: "))
+                #salvar a alteração
+                cadastros.write(f'{jp.encode(line)}\n')
+            #salva os que não são para alterar                
+            if line.cpf != cpf:
+                cadastros.write(f'{jp.encode(line)}\n') 
+        cadastros.truncate()'''
+
+def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
+    from classes import Modalidade, Atleta
+    import jsonpickle as jp
+    with open(nome_arquivo, "r+") as cadastros:
+        new_cadastro = cadastros.readlines()
+        cadastros.seek(0)
+        #altera o cadastro
+        for line in new_cadastro:
+            line = jp.decode(line)
+            if line.cpf == cpf_editar:
+                line.name = input("Digite o nome do Atleta: ")
+                line.age = validation_int(input("Digite a idade do Atleta: "))
+                line.gender = validation_str(input("Digite o sexo do Atleta: "), "MF")
+                line.paralisy = cadastrar_lista(deficiency)
+                line.covid = validation_str(input("O Atleta teve covid: "), "SN")
+                sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
+                for i in range(sports_quant):
+                    modalidade = cadastrar_lista(sports)
+                    have_medal = validation_str(input("Ganhou alguma medalha?: [S/N] "), 'SN')
+                    #provavelmente vou ter que voltar aqui para ver o caso desa 
+                    medals_gold = medals_silver = medals_bronze = 0
+                    modalidades = []
+                    if have_medal == 'Sim':
+                        # falta separar as medalhas por modalidade
+                        medals_gold = validation_int(input("Quantas medalhas de ouro: "))
+                        medals_silver = validation_int(input("Quantas medalhas de prata: "))
+                        medals_bronze = validation_int(input("Quantas medalhas de bonze: "))
+                    modality = Modalidade(modalidade, medals_gold, medals_silver, medals_bronze)
+                    modalidades.append(modality)
+
+                line.modality = modalidades
+                cadastros.write(f'{jp.encode(line)}\n')
+            else:
+                cadastros.write(f'{jp.encode(line)}\n')
+        cadastros.truncate()

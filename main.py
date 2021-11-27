@@ -30,6 +30,7 @@ while option != 5:
 [4] - Sair''')
     #inputs
     option = validation_limited_int(4,(input("Digite a opção: ")))
+    cpfs = list_cpfs('cadastros.json')
     if option == 0:
         cpfs = list_cpfs('cadastros.json')
         cpf = validation_cpf_digit(input("Digite o cpf do Atleta: "))
@@ -40,7 +41,6 @@ while option != 5:
         print("Digite apenas o número da opção correspondente a deficiência que o Atleta possui")
         paralisy = cadastrar_lista(deficiency)
         covid = validation_str(input("Foi diagnosticado com Covid-19?: [S/N] "), 'SN')
-
         sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
         print("Digite apenas o número da opção correspondente a modalidade que o atleta participou")
         # assim que pegar qual foi a modalidade, cadastrar as medalhas da mesma
@@ -60,12 +60,21 @@ while option != 5:
         dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, covid, modalidades))
         with open('cadastros.json', 'a', encoding='utf-8') as cadastrar:
             cadastrar.write(f'{dados}\n')
+
     elif option == 1:
         exibir_cadastros('cadastros.json')
-    
+        cpf_editar = validation_cpf_digit(input("Digite o cpf do Atleta para editá-lo: "))
+        validation_excluir_cpf(cpf_editar, cpfs)
+        editar_cadastro('cadastros.json', cpf_editar, deficiency, sports)
+
     elif option == 2:
-        exibir_cadastros('cadastros.json')
-        cpfs = list_cpfs('cadastros.json')
-        cpf_excluir = validation_cpf_digit(input("Digite o cpf do Atleta para excluí-lo: "))
-        validation_excluir_cpf(cpf_excluir, cpfs)
-        excluir_cadastro('cadastros.json', cpf_excluir)
+        print("Opções:\n[0] - Excluir cadastro\n[1] - Excluir Modalidade")
+        option_2 = validation_limited_int(1, input("Digite a opção: "))
+        if option_2 == 0:
+            exibir_cadastros('cadastros.json')
+            cpf_excluir = validation_cpf_digit(input("Digite o cpf do Atleta para excluí-lo: "))
+            validation_excluir_cpf(cpf_excluir, cpfs)
+            excluir_cadastro('cadastros.json', cpf_excluir)
+            print('Cadastros excluído com sucesso!!!')
+        else:
+            print(option_2)
