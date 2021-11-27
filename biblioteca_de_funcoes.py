@@ -29,19 +29,12 @@ def cadastrar_lista(lista): # usa uma lista com as opções para transformar em 
 
     return cadastro
 
-def printar_cadastros(nome_arquivo): # ler os arquivos cadastrados
+def exibir_cadastros(nome_arquivo):
     import jsonpickle as jp
     with open(nome_arquivo, 'r') as arquivo:
         for cadastro in arquivo:
             atleta = jp.decode(cadastro)
-            print(f'{atleta.cpf}\n{atleta.name}\n{atleta.age}\n{atleta.gender}\n{atleta.paralisy}\n{atleta.sports_quant}\n{atleta.medal}\n{atleta.modalidade}')
-
-def exibir_cadastros(nome_arquivo):
-    import jsonpickle as jp
-    with open(nome_arquivo, 'r') as arquivo:
-        for numero, cadastro in enumerate(arquivo):
-            atleta = jp.decode(cadastro)
-            print(numero+1, atleta.cpf, atleta.name, atleta.age, atleta.gender, atleta.paralisy, atleta.covid, atleta.modalidade, atleta.medal)
+            print(f'Cpf: {atleta.cpf}, Nome: {atleta.name}, Idade: {atleta.age},Sexo: {atleta.gender},Tipo de paralisia: {atleta.paralisy},Teve covid: {atleta.covid},Modalidades: {atleta.modality}')
 
 def list_cpfs(nome_arquivo):
     lista = []
