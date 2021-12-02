@@ -135,11 +135,11 @@ def relatorio1(nome_arquivo):
     # A quantidade total de atletas que participaram dos Jogos Paraolímpicos por modalidade e sexo, informando também o total geral;
     sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
     import jsonpickle as jp
-    quant_modality = 0
+    quant_modality = fem = masc = 0
     try:
         
         for modalidade in sports: # a modalidade de cada um
-            quant_modality = 0 # pra resetar o valor
+            quant_modality = fem = masc = 0 # pra resetar o valor
             with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
                 for atleta in arquivo: # ler o cadastro de cada atleta
                     atleta = jp.decode(atleta)
@@ -148,7 +148,14 @@ def relatorio1(nome_arquivo):
                         #print(atleta.modality[i].modalidade)
                         if atleta.modality[i].modalidade == modalidade:
                             quant_modality += 1
-                            print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando')
+                            if atleta.gender == 'Masculino':
+                                masc += 1
+                            elif atleta.gender == 'Feminino':
+                                fem += 1
+            if quant_modality > 0:
+                print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando. Sendo dentre eles: {masc} homem(ns) e {fem} mulher(es)!')
+            else:
+                print(f'A modalidade {modalidade} não teve nenhum atleta participando!')
 
     except FileNotFoundError:
         print("Nenhum atleta foi cadastrado ainda")
