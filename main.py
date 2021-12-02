@@ -78,3 +78,6 @@ while option != 5:
             print('Cadastros excluído com sucesso!!!')
         else:
             print(option_2)
+    elif option == 3:
+        print('='*15,'Relatório','='*15)
+        relatorio1('cadastros.json')

@@ -1,4 +1,5 @@
 import jsonpickle as jp
+from classes import Atleta, Modalidade
 
 def validation_str(var, palavras_chave): # validar strings de cadastro com S ou N ou M e F
     var = var.upper()
@@ -25,9 +26,12 @@ def validation_cpf_digit(cpf): # validar se o cpf digitado é considerado válid
         cpf = input("Erro! Cpf inválido, digite novamente: ")
     return int(cpf)
 
+## se digitar string ainda da erro
 def validation_limited_int(limitation, num): # validar as entradas se são int e se está de acordo com as opções
-    while not num.isdigit or (int(num) > limitation) or (int(num) < 0):
-        num = input("Erro, digite um número válido: ")
+    num = str(num)
+    while not num.isdigit:
+        while not (int(num) > limitation) or (int(num) < 0):
+            num = input("Erro, digite um número válido: ")
     return int(num)
     
 def cadastrar_lista(lista): # usa uma lista com as opções para transformar em opções númericas para cadastrar
@@ -51,10 +55,6 @@ def exibir_cadastros(nome_arquivo): # função para exibir as informações de t
                 exibir_modalidade(atleta.modality)
     except FileNotFoundError:
         print("Nenhum atleta foi cadastrado ainda")
-
-'''def exibir_modalidade(nome_arquivo):
-    with open(nome_arquivo, "r+", encoding='utf-8') as arquivo:
-        '''
 
 def exibir_modalidade(modality): # função para exibir todas as informações das modalidades em que o atleta foi cadastrado
     import jsonpickle as jp
@@ -85,7 +85,7 @@ def validation_excluir_cpf(cpf_excluir, lista_cpfs): # valida se o cpf digitado 
     return int(cpf_excluir)
 
 def excluir_cadastro(nome_arquivo, cpf_excluir):
-    # abre o arquivo e salvar excluindo o que é pra excluir
+    # abre o arquivo e salva excluindo o que é pra excluir
     with open(nome_arquivo, "r+") as arquivo: #abri o arquivo como leitura e edição
         new_file = arquivo.readlines() # transforma em lista
         arquivo.seek(0)
@@ -94,23 +94,6 @@ def excluir_cadastro(nome_arquivo, cpf_excluir):
             if line.cpf != cpf_excluir: # verifica se é o a linha pra ser excluida
                 arquivo.write(f'{jp.encode(line)}\n') # grava as linhas que não são a que deve ser excluida
         arquivo.truncate()
-
-'''def editar_cadastro(nome_arquivo, cpf):
-    with open(nome_arquivo, 'r+', encoding='utf-8') as cadastros:
-        new_cadastro = cadastros.readlines()
-        cadastros.seek(0)
-        # alterar o cadastro
-        for line in new_cadastro:
-            line = jp.decode(line)
-            if line.cpf == cpf: # verifica se é a linha que deve ser editada
-                line.name = input("Nome: ")
-                line.altura = float(input("Altura: "))
-                #salvar a alteração
-                cadastros.write(f'{jp.encode(line)}\n')
-            #salva os que não são para alterar                
-            if line.cpf != cpf:
-                cadastros.write(f'{jp.encode(line)}\n') 
-        cadastros.truncate()'''
 
 def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
     from classes import Modalidade, Atleta
@@ -128,6 +111,7 @@ def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
                 line.paralisy = cadastrar_lista(deficiency)
                 line.covid = validation_str(input("O Atleta teve covid: "), "SN")
                 sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
+                # caso haja só 1 modalidade de inicio apenas edita 1 e não consegue adicionar
                 for i in range(sports_quant):
                     modalidade = cadastrar_lista(sports)
                     have_medal = validation_str(input("Ganhou alguma medalha?: [S/N] "), 'SN')
@@ -135,7 +119,6 @@ def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
                     medals_gold = medals_silver = medals_bronze = 0
                     modalidades = []
                     if have_medal == 'Sim':
-                        # falta separar as medalhas por modalidade
                         medals_gold = validation_int(input("Quantas medalhas de ouro: "))
                         medals_silver = validation_int(input("Quantas medalhas de prata: "))
                         medals_bronze = validation_int(input("Quantas medalhas de bonze: "))
@@ -147,3 +130,25 @@ def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
             else:
                 cadastros.write(f'{jp.encode(line)}\n')
         cadastros.truncate()
+
+def relatorio1(nome_arquivo):
+    # A quantidade total de atletas que participaram dos Jogos Paraolímpicos por modalidade e sexo, informando também o total geral;
+    sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
+    import jsonpickle as jp
+    quant_modality = 0
+    try:
+        
+        for modalidade in sports: # a modalidade de cada um
+            quant_modality = 0 # pra resetar o valor
+            with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+                for atleta in arquivo: # ler o cadastro de cada atleta
+                    atleta = jp.decode(atleta)
+                # tem que dar um len(atleta.modality)
+                    for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
+                        #print(atleta.modality[i].modalidade)
+                        if atleta.modality[i].modalidade == modalidade:
+                            quant_modality += 1
+                            print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando')
+
+    except FileNotFoundError:
+        print("Nenhum atleta foi cadastrado ainda")
