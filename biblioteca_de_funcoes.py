@@ -152,8 +152,15 @@ def relatorio1(nome_arquivo):
                                 masc += 1
                             elif atleta.gender == 'Feminino':
                                 fem += 1
+
             if quant_modality > 0:
-                print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando. Sendo dentre eles: {masc} homem(ns) e {fem} mulher(es)!')
+                
+                if masc == 0:
+                    print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando. Sendo dentre eles: {fem} Mulher(es) e nenhum Homem!')
+                elif fem == 0:
+                    print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando. Sendo dentre eles: {masc} Homem(ns) e nenhuma Mulher!')
+                else:
+                    print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando. Sendo dentre eles: {masc} homem(ns) e {fem} mulher(es)!')
             else:
                 print(f'A modalidade {modalidade} não teve nenhum atleta participando!')
 
