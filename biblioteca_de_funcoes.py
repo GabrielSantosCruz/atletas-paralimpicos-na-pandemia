@@ -205,3 +205,33 @@ def relatorio2(nome_arquivo):
 
     except FileNotFoundError: # verificar essa parte nos outros
         None
+
+def relatorio3(nome_arquivo):
+    #Quadro de medalhas: quantitativo de medalhas de ouro, prata e bronze por modalidade, ordenadas primeiramente pelo número de medalhas de ouro, seguidas pelo número de medalhas de prata, finalmente, de bronze;
+    sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
+    import jsonpickle as jp
+    gold = silver = bronze = tot = 0
+    try:
+        
+        for modalidade in sports: # a modalidade de cada um
+            gold = silver = bronze = tot = 0 # pra resetar o valor
+            with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+                for atleta in arquivo: # ler o cadastro de cada atleta
+                    atleta = jp.decode(atleta)
+                # tem que dar um len(atleta.modality)
+                    for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
+                        #print(atleta.covid)
+                        if atleta.modality[i].modalidade == modalidade:
+                            gold += atleta.modality[i].medals_gold
+                            silver += atleta.modality[i].medals_silver
+                            bronze += atleta.modality[i].medals_bronze
+            tot = gold+silver+bronze
+            if tot > 0:
+                
+                print(f'Na modalidade {modalidade} as medalhas foram: {gold} de Ouro, {silver} de Prata e {bronze} de Ouro')
+
+            else:
+                print(f'Nenhum Atleta ganhou medalha na modalidade {modalidade}')
+
+    except FileNotFoundError: # verificar essa parte nos outros
+        None

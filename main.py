@@ -82,3 +82,4 @@ while option != 5:
         print('='*15,'Relatório','='*15)
         relatorio1('cadastros.json')
         relatorio2('cadastros.json')
+        relatorio3('cadastros.json')
