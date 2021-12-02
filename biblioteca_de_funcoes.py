@@ -166,3 +166,42 @@ def relatorio1(nome_arquivo):
 
     except FileNotFoundError:
         print("Nenhum atleta foi cadastrado ainda")
+
+def relatorio2(nome_arquivo):
+    #Relação dos atletas diagnosticados com Covid-19 por modalidade e sexo;
+    # modalidade tal teve tantos com covid e tantos sem
+    sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
+    import jsonpickle as jp
+    quant_covid = fem = masc = 0
+    try:
+        
+        for modalidade in sports: # a modalidade de cada um
+            quant_covid = fem = masc = 0 # pra resetar o valor
+            with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+                for atleta in arquivo: # ler o cadastro de cada atleta
+                    atleta = jp.decode(atleta)
+                # tem que dar um len(atleta.modality)
+                    for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
+                        #print(atleta.covid)
+                        if atleta.modality[i].modalidade == modalidade:
+                            if atleta.covid == 'Sim':
+                                quant_covid += 1
+                                if atleta.gender == 'Masculino':
+                                    masc += 1
+                                elif atleta.gender == 'Feminino':
+                                    fem += 1
+
+            if quant_covid > 0:
+                
+                if masc == 0:
+                    print(f'A modalidade {modalidade} teve {quant_covid} atleta(s) diagnosticados com covid. Sendo dentre eles: {fem} Mulher(es) e nenhum Homem!')
+                elif fem == 0:
+                    print(f'A modalidade {modalidade} teve {quant_covid} atleta(s) diagnosticados com covid. Sendo dentre eles: {masc} Homem(ns) e nenhuma Mulher!')
+                else:
+                    print(f'A modalidade {modalidade} teve {quant_covid} atleta(s) diagnosticados com covid. Sendo dentre eles: {masc} homem(ns) e {fem} mulher(es)!')
+
+            else:
+                print(f'A modalidade {modalidade} não teve nenhum atleta diagnosticados com covid!')
+
+    except FileNotFoundError: # verificar essa parte nos outros
+        None
