@@ -235,3 +235,27 @@ def relatorio3(nome_arquivo):
 
     except FileNotFoundError: # verificar essa parte nos outros
         None
+
+def relatorio4(nome_arquivo):
+    #Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
+    sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
+    import jsonpickle as jp
+    masc_gold = masc_silver = masc_bronze = tot = 0
+    try:
+        for modalidade in sports: # a modalidade de cada um
+            with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+                for atleta in arquivo: # ler o cadastro de cada atleta
+                    atleta = jp.decode(atleta)
+                    # tem que dar um len(atleta.modality)
+                    for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
+                        #print(atleta.covid)
+                        if atleta.modality[i].modalidade == modalidade:
+                            tot = atleta.modality[i].medals_gold + atleta.modality[i].medals_silver + atleta.modality[i].medals_bronze
+                            if tot > 0:
+                                if atleta.gender == 'Masculino':
+                                    print(f'Atletas Homens da modalidade {modalidade}:\nNome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.')
+                                elif atleta.gender == 'Feminino':
+                                    print(f'Atletas Mulheres da modalidade {modalidade}:\nNome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.')
+    #Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
+    except FileNotFoundError: # verificar essa parte nos outros
+        None
