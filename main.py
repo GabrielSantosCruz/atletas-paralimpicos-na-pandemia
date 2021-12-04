@@ -12,6 +12,7 @@ O código e sua evolução pode ser encontrado em: https://github.com/GabrielSan
 from biblioteca_de_funcoes import *
 from classes import Atleta, Modalidade
 import jsonpickle as jp
+from os import system
 
 sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
 deficiency = ['Deficiência mental', 'Visual', 'Amputação', 'Deficiência física']
@@ -27,12 +28,15 @@ while option != 5:
 [1] - Editar Cadastro
 [2] - Excluir Cadastro
 [3] - Gerar Relatório
+
 [4] - Sair''')
     #inputs
+    nome_arquivo = 'cadastros.json'
     option = validation_limited_int(4,(input("Digite a opção: ")))
-    cpfs = list_cpfs('cadastros.json')
+    cpfs = list_cpfs(nome_arquivo)
     if option == 0:
-        cpfs = list_cpfs('cadastros.json')
+        system('cls')
+        cpfs = list_cpfs(nome_arquivo)
         cpf = validation_cpf_digit(input("Digite o cpf do Atleta: "))
         validation_cpf(cpf, cpfs)
         name = input("Nome do Atleta: ")
@@ -58,28 +62,32 @@ while option != 5:
             modalidades.append(modality)
         # criando a classe e salvando no arquivo
         dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, covid, modalidades))
-        with open('cadastros.json', 'a', encoding='utf-8') as cadastrar:
+        with open(nome_arquivo, 'a', encoding='utf-8') as cadastrar:
             cadastrar.write(f'{dados}\n')
 
     elif option == 1:
-        exibir_cadastros('cadastros.json')
+        system('cls')
+        exibir_cadastros(nome_arquivo)
         cpf_editar = validation_cpf_digit(input("Digite o cpf do Atleta para editá-lo: "))
         validation_excluir_cpf(cpf_editar, cpfs)
-        editar_cadastro('cadastros.json', cpf_editar, deficiency, sports)
+        editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports)
 
     elif option == 2:
+        system('cls')
         print("Opções:\n[0] - Excluir cadastro\n[1] - Excluir Modalidade")
         option_2 = validation_limited_int(1, input("Digite a opção: "))
         if option_2 == 0:
-            exibir_cadastros('cadastros.json')
+            exibir_cadastros(nome_arquivo)
             cpf_excluir = validation_cpf_digit(input("Digite o cpf do Atleta para excluí-lo: "))
             validation_excluir_cpf(cpf_excluir, cpfs)
-            excluir_cadastro('cadastros.json', cpf_excluir)
+            excluir_cadastro(nome_arquivo, cpf_excluir)
             print('Cadastros excluído com sucesso!!!')
         else:
             print(option_2)
     elif option == 3:
+        system('cls')
         print('='*15,'Relatório','='*15)
-        relatorio1('cadastros.json')
-        relatorio2('cadastros.json')
-        relatorio3('cadastros.json')
+        relatorio1(nome_arquivo)
+        relatorio2(nome_arquivo)
+        relatorio3(nome_arquivo)
+        relatorio4(nome_arquivo)
