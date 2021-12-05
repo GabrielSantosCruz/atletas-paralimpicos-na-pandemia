@@ -109,10 +109,6 @@ def cadastrar_objeto(lista): # usa uma lista com as opções para transformar em
         print(f'[{numero}] - {nome.modalidade}')
     
     cadastro = validation_limited_int(len(lista), input("Digite a opção: "))
-    '''for numero, nome in enumerate(lista): # para comparar a opção digitada com os da lista
-        if cadastro == numero:
-            cadastro = numero ''' 
-
     return cadastro
 
 def excluir_modalidade(nome_arquivo, cpf_excluir):
@@ -155,18 +151,19 @@ def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
                 line.covid = validation_str(input("O Atleta teve covid: [S/N] "), "SN")
                 sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
                 # caso haja só 1 modalidade de inicio apenas edita 1 e não consegue adicionar
+                modalidades = []
                 for i in range(sports_quant):
                     modalidade = cadastrar_lista(sports)
                     have_medal = validation_str(input("Ganhou alguma medalha?: [S/N] "), 'SN')
                     #provavelmente vou ter que voltar aqui para ver o caso dessa 
                     medals_gold = medals_silver = medals_bronze = 0
-                    modalidades = []
                     if have_medal == 'Sim':
                         medals_gold = validation_int(input("Quantas medalhas de ouro: "))
                         medals_silver = validation_int(input("Quantas medalhas de prata: "))
                         medals_bronze = validation_int(input("Quantas medalhas de bonze: "))
                     modalidade_ = Modalidade(modalidade, medals_gold, medals_silver, medals_bronze)
                     modalidades.append(modalidade_)
+
                 line.modality = modalidades
 
                 cadastros.write(f'{jp.encode(line)}\n')
