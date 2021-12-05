@@ -122,7 +122,7 @@ def excluir_modalidade(nome_arquivo, cpf_excluir):
                 
                 if len(lista) == 1:
                     print('Não é possível excluir a unica modalidade em que o atleta participou!!!')
-                    
+                ## ainda exclui quando tem só 1
                 else:
                     modalidade_excluir = cadastrar_objeto(lista)
                     del lista[modalidade_excluir]
@@ -283,6 +283,7 @@ def relatorio4(nome_arquivo):
     masc_gold = masc_silver = masc_bronze = tot = 0
     try:
         for modalidade in sports: # a modalidade de cada um
+            texto_masc = texto_fem = ''
             with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
                 for atleta in arquivo: # ler o cadastro de cada atleta
                     atleta = jp.decode(atleta)
@@ -291,17 +292,27 @@ def relatorio4(nome_arquivo):
                         #print(atleta.covid)
                         if atleta.modality[i].modalidade == modalidade:
                             if atleta.gender == 'Masculino':
-                                print(f'Modalidade: {modalidade}') # tem que aparecer só uma vez
-                                print(f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.', end='\n')
-                            
-                            '''elif atleta.gender == 'Feminino':
-                                print(f'Atletas Mulheres da modalidade {modalidade}:\nNome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.')'''
-    #Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
-        '''Modalidade: Atletismo
-        ========================> Homens <===================
-        Nome: aaaa, Idade: 12, Tipo de Paralisia: aaa - Medalhas: .......
-        Nome: aaaa, Idade: 12, Tipo de Paralisia: aaa - Medalhas: .......
-        Nome: aaaa, Idade: 12, Tipo de Paralisia: aaa - Medalhas: .......'''
+                                texto_masc += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.\n'
+                                
+                            elif atleta.gender == 'Feminino':
+                                texto_fem += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.\n'
 
+            print(f'\n============= Modalidade: {modalidade} =============')
+            # Não teve nenhum atleta
+            # só houve atleta masculino
+            # ó houve atleta feminino
+            # houve os 2
+            if len(texto_masc) == 0 and len(texto_fem) == 0:
+                print('Não Houve nenhum Atleta cadastrado nesta modalidade!')
+            else:
+                if len(texto_masc) == 0:
+                    print('Não Houveram Atletas Masculinos nesta modalidade!')
+                else:
+                    print(f'=====> Atletas Masculinos\n{texto_masc}')
+                if len(texto_fem) == 0:
+                    print('Não Houveram Atletas Femininas nesta modalidade!')
+                else:
+                    print(f'=====> Atletas Femininas\n{texto_fem}')
+    #Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
     except FileNotFoundError: # verificar essa parte nos outros
         None
