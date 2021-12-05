@@ -45,6 +45,12 @@ def cadastrar_lista(lista): # usa uma lista com as opções para transformar em 
 
     return cadastro
 
+def limpar_tela(time=0):
+    from os import system
+    from time import sleep
+    sleep(time)
+    system('cls')
+
 def exibir_cadastros(nome_arquivo): # função para exibir as informações de todos atletas cadastrados
     try: 
         import jsonpickle as jp
@@ -95,6 +101,43 @@ def excluir_cadastro(nome_arquivo, cpf_excluir):
                 arquivo.write(f'{jp.encode(line)}\n') # grava as linhas que não são a que deve ser excluida
         arquivo.truncate()
 
+def cadastrar_objeto(lista): # usa uma lista com as opções para transformar em opções númericas para cadastrar
+    import jsonpickle as jp
+    print('Modalidades que o Atleta participou: ')
+    for numero, nome in enumerate(lista): # transforma em opção
+        #nome = jp.decode(nome)
+        print(f'[{numero}] - {nome.modalidade}')
+    
+    cadastro = validation_limited_int(len(lista), input("Digite a opção: "))
+    '''for numero, nome in enumerate(lista): # para comparar a opção digitada com os da lista
+        if cadastro == numero:
+            cadastro = numero ''' 
+
+    return cadastro
+
+def excluir_modalidade(nome_arquivo, cpf_excluir):
+    with open(nome_arquivo, "r+") as arquivo:
+        new_file = arquivo.readlines() # transforma em lista
+        arquivo.seek(0)
+        for line in new_file:
+            line = jp.decode(line)
+            lista = line.modality
+            if line.cpf == cpf_excluir: # verifica se é o a linha do arquivo pra ser excluida
+                
+                if len(lista) == 1:
+                    print('Não é possível excluir a unica modalidade em que o atleta participou!!!')
+                    
+                else:
+                    modalidade_excluir = cadastrar_objeto(lista)
+                    del lista[modalidade_excluir]
+                    line.modality = lista
+                    # converter em uma lista, depois trocar a lista com o parametro
+                    arquivo.write(f'{jp.encode(line)}\n')
+            else: 
+                arquivo.write(f'{jp.encode(line)}\n') # grava as linhas que não são a que deve ser excluida
+        arquivo.truncate()
+
+
 def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
     from classes import Modalidade, Atleta
     import jsonpickle as jp
@@ -107,25 +150,25 @@ def editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports):
             if line.cpf == cpf_editar:
                 line.name = input("Digite o nome do Atleta: ")
                 line.age = validation_int(input("Digite a idade do Atleta: "))
-                line.gender = validation_str(input("Digite o sexo do Atleta: "), "MF")
+                line.gender = validation_str(input("Digite o sexo do Atleta: [M/F] "), "MF")
                 line.paralisy = cadastrar_lista(deficiency)
-                line.covid = validation_str(input("O Atleta teve covid: "), "SN")
+                line.covid = validation_str(input("O Atleta teve covid: [S/N] "), "SN")
                 sports_quant = validation_int(input("De quantas modalidades o Atleta paticipou: "))
                 # caso haja só 1 modalidade de inicio apenas edita 1 e não consegue adicionar
                 for i in range(sports_quant):
                     modalidade = cadastrar_lista(sports)
                     have_medal = validation_str(input("Ganhou alguma medalha?: [S/N] "), 'SN')
-                    #provavelmente vou ter que voltar aqui para ver o caso desa 
+                    #provavelmente vou ter que voltar aqui para ver o caso dessa 
                     medals_gold = medals_silver = medals_bronze = 0
                     modalidades = []
                     if have_medal == 'Sim':
                         medals_gold = validation_int(input("Quantas medalhas de ouro: "))
                         medals_silver = validation_int(input("Quantas medalhas de prata: "))
                         medals_bronze = validation_int(input("Quantas medalhas de bonze: "))
-                    modality = Modalidade(modalidade, medals_gold, medals_silver, medals_bronze)
-                    modalidades.append(modality)
-
+                    modalidade_ = Modalidade(modalidade, medals_gold, medals_silver, medals_bronze)
+                    modalidades.append(modalidade_)
                 line.modality = modalidades
+
                 cadastros.write(f'{jp.encode(line)}\n')
             else:
                 cadastros.write(f'{jp.encode(line)}\n')
@@ -250,12 +293,18 @@ def relatorio4(nome_arquivo):
                     for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
                         #print(atleta.covid)
                         if atleta.modality[i].modalidade == modalidade:
-                            tot = atleta.modality[i].medals_gold + atleta.modality[i].medals_silver + atleta.modality[i].medals_bronze
-                            if tot > 0:
-                                if atleta.gender == 'Masculino':
-                                    print(f'Atletas Homens da modalidade {modalidade}:\nNome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.')
-                                elif atleta.gender == 'Feminino':
-                                    print(f'Atletas Mulheres da modalidade {modalidade}:\nNome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.')
+                            if atleta.gender == 'Masculino':
+                                print(f'Modalidade: {modalidade}') # tem que aparecer só uma vez
+                                print(f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.', end='\n')
+                            
+                            '''elif atleta.gender == 'Feminino':
+                                print(f'Atletas Mulheres da modalidade {modalidade}:\nNome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.')'''
     #Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
+        '''Modalidade: Atletismo
+        ========================> Homens <===================
+        Nome: aaaa, Idade: 12, Tipo de Paralisia: aaa - Medalhas: .......
+        Nome: aaaa, Idade: 12, Tipo de Paralisia: aaa - Medalhas: .......
+        Nome: aaaa, Idade: 12, Tipo de Paralisia: aaa - Medalhas: .......'''
+
     except FileNotFoundError: # verificar essa parte nos outros
         None
