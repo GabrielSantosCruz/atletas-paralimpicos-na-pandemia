@@ -22,20 +22,26 @@ medal = {}
 option = 1
 
 # inicio do programa
-while option != 5:
+while option != 4:
+    limpar_tela()
+    print('''+------------------------------------------+
+| Bem vindo ao sistema "UEFS pelos Atletas |
+|     Paralimpicos"! Escolha uma opção     |
++------------------------------------------+''')
     print('''OPÇÕES:
 [0] - Cadastrar
 [1] - Editar Cadastro
-[2] - Excluir Cadastro
+[2] - Excluir Cadastro/Modalidade
 [3] - Gerar Relatório
 
-[4] - Sair''')
+[4] - Sair\n''')
     #inputs
     nome_arquivo = 'cadastros.json'
     option = validation_limited_int(4,(input("Digite a opção: ")))
-    cpfs = list_cpfs(nome_arquivo)
+    cpfs = list_cpfs(nome_arquivo) # lista com todos cpfs já cadastrados, para validar a duplicidade
+
     if option == 0:
-        system('cls')
+        limpar_tela(1)
         cpfs = list_cpfs(nome_arquivo)
         cpf = validation_cpf_digit(input("Digite o cpf do Atleta: "))
         validation_cpf(cpf, cpfs)
@@ -64,30 +70,42 @@ while option != 5:
         dados = jp.encode(Atleta(cpf, name, age, gender, paralisy, covid, modalidades))
         with open(nome_arquivo, 'a', encoding='utf-8') as cadastrar:
             cadastrar.write(f'{dados}\n')
+        input("Aperte ENTER para continuar!!!")
 
     elif option == 1:
-        system('cls')
+        limpar_tela(1)
         exibir_cadastros(nome_arquivo)
         cpf_editar = validation_cpf_digit(input("Digite o cpf do Atleta para editá-lo: "))
         validation_excluir_cpf(cpf_editar, cpfs)
         editar_cadastro(nome_arquivo, cpf_editar, deficiency, sports)
+        input("Aperte ENTER para continuar!!!")
 
     elif option == 2:
-        system('cls')
-        print("Opções:\n[0] - Excluir cadastro\n[1] - Excluir Modalidade")
+        limpar_tela(1)
+        print("Opções:\n[0] - Excluir cadastro completo\n[1] - Excluir Modalidade")
         option_2 = validation_limited_int(1, input("Digite a opção: "))
+
         if option_2 == 0:
             exibir_cadastros(nome_arquivo)
             cpf_excluir = validation_cpf_digit(input("Digite o cpf do Atleta para excluí-lo: "))
             validation_excluir_cpf(cpf_excluir, cpfs)
             excluir_cadastro(nome_arquivo, cpf_excluir)
-            print('Cadastros excluído com sucesso!!!')
+            print('Cadastro excluído com sucesso!!!')
+            input("Aperte ENTER para continuar!!!")
+
         else:
-            print(option_2)
+            exibir_cadastros(nome_arquivo)
+            cpf_excluir = validation_int(input('Digite o cpf do Atleta: '))
+            validation_excluir_cpf(cpf_excluir, cpfs)
+            excluir_modalidade(nome_arquivo, cpf_excluir)
+            print('Modalidade excluído com sucesso!!!')
+            input("Aperte ENTER para continuar!!!")
+
     elif option == 3:
-        system('cls')
+        limpar_tela(1)
         print('='*15,'Relatório','='*15)
         relatorio1(nome_arquivo)
         relatorio2(nome_arquivo)
         relatorio3(nome_arquivo)
         relatorio4(nome_arquivo)
+        input("Aperte ENTER para continuar!!!")
