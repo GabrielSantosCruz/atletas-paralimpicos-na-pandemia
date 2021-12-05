@@ -292,10 +292,16 @@ def relatorio4(nome_arquivo):
                         #print(atleta.covid)
                         if atleta.modality[i].modalidade == modalidade:
                             if atleta.gender == 'Masculino':
-                                texto_masc += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.\n'
-                                
+                                if (atleta.modality[i].medals_gold + atleta.modality[i].medals_silver + atleta.modality[i].medals_bronze) > 0:
+                                    texto_masc += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.\n'
+                                else: 
+                                    texto_masc += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - O Atleta não ganhou Medalhas\n'
+
                             elif atleta.gender == 'Feminino':
-                                texto_fem += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.\n'
+                                if (atleta.modality[i].medals_gold + atleta.modality[i].medals_silver + atleta.modality[i].medals_bronze) > 0:
+                                    texto_fem += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - Medalhas: Ouro: {atleta.modality[i].medals_gold}, Prata {atleta.modality[i].medals_silver}, Bronze: {atleta.modality[i].medals_bronze}.\n'
+                                else: 
+                                    texto_fem += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - A Atleta não ganhou Medalhas\n'
 
             print(f'\n============= Modalidade: {modalidade} =============')
             # Não teve nenhum atleta
