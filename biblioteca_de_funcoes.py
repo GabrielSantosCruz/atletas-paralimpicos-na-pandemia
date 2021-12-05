@@ -176,6 +176,7 @@ def relatorio1(nome_arquivo):
     sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
     import jsonpickle as jp
     quant_modality = fem = masc = 0
+    total = 0
     try:
         
         for modalidade in sports: # a modalidade de cada um
@@ -183,6 +184,7 @@ def relatorio1(nome_arquivo):
             with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
                 for atleta in arquivo: # ler o cadastro de cada atleta
                     atleta = jp.decode(atleta)
+                    
                 # tem que dar um len(atleta.modality)
                     for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
                         #print(atleta.modality[i].modalidade)
@@ -203,7 +205,14 @@ def relatorio1(nome_arquivo):
                     print(f'A modalidade {modalidade} teve {quant_modality} atleta(s) participando. Sendo dentre eles: {masc} homem(ns) e {fem} mulher(es)!')
             else:
                 print(f'A modalidade {modalidade} não teve nenhum atleta participando!')
-
+        with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+                for atleta in arquivo: # ler o cadastro de cada atleta
+                    total += 1
+        if total > 1:
+            print(f'\nAo total, tivemos {total} Atletas participando das Paraolimpiadas!!\n')
+        if total == 1:
+            print(f'\nAo total, tivemos {total} Atleta participando das Paraolimpiadas!!\n')
+            
     except FileNotFoundError:
         print("Nenhum atleta foi cadastrado ainda")
 
@@ -322,3 +331,6 @@ def relatorio4(nome_arquivo):
     #Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
     except FileNotFoundError: # verificar essa parte nos outros
         None
+
+#def relatorio5(nome_arquivo):
+    #Das 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, quantas o Brasil teve participação? Em quais modalidades ganhou medalha(s)? Quais modalidades que o Brasil participou e não ganhou medalha(s)? Quantas e quais modalidades o Brasil não participou? Apresentar as modalidades em ordem alfabética.
