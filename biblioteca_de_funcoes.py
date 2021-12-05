@@ -212,7 +212,7 @@ def relatorio1(nome_arquivo):
             print(f'\nAo total, tivemos {total} Atletas participando das Paraolimpiadas!!\n')
         if total == 1:
             print(f'\nAo total, tivemos {total} Atleta participando das Paraolimpiadas!!\n')
-            
+
     except FileNotFoundError:
         print("Nenhum atleta foi cadastrado ainda")
 
@@ -298,7 +298,6 @@ def relatorio4(nome_arquivo):
                     atleta = jp.decode(atleta)
                     # tem que dar um len(atleta.modality)
                     for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
-                        #print(atleta.covid)
                         if atleta.modality[i].modalidade == modalidade:
                             if atleta.gender == 'Masculino':
                                 if (atleta.modality[i].medals_gold + atleta.modality[i].medals_silver + atleta.modality[i].medals_bronze) > 0:
@@ -332,5 +331,45 @@ def relatorio4(nome_arquivo):
     except FileNotFoundError: # verificar essa parte nos outros
         None
 
-#def relatorio5(nome_arquivo):
-    #Das 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, quantas o Brasil teve participação? Em quais modalidades ganhou medalha(s)? Quais modalidades que o Brasil participou e não ganhou medalha(s)? Quantas e quais modalidades o Brasil não participou? Apresentar as modalidades em ordem alfabética.
+def relatorio5(nome_arquivo):
+    # Apresentar as modalidades em ordem alfabética.
+    sports = ['Atletismo', 'Badminton', 'Basquetebol em cadeira de rodas', 'Bocha', 'Canoagem', 'Ciclismo (estrada e pista)', 'Esgrima em cadeira de rodas', 'Futebol de 5', 'Goalball', 'Hipismo', 'Judô', 'Levantamento de peso', 'Natação', 'Remo', 'Rugby em cadeira de rodas', 'Taekwondo', 'Tênis de mesa', 'Tênis em cadeira de rodas', 'Tiro', 'Tiro com arco', 'Triatlo', 'Voleibol sentado']
+    import jsonpickle as jp
+    participacao = ganhou_medalhas = nao_ganhou = nao_participou = []
+    masc_gold = masc_silver = masc_bronze = tot = 0
+    try:
+        for modalidade in sports: # a modalidade de cada um
+            texto_masc = texto_fem = ''
+            with open(nome_arquivo, 'r', encoding='utf-8') as arquivo:
+                for atleta in arquivo: # ler o cadastro de cada atleta
+                    atleta = jp.decode(atleta)
+                    # tem que dar um len(atleta.modality)
+                    for i in range(len(atleta.modality)): # porque podem haver mais de uma modalidade cadastrada
+                        if atleta.modality[i].modalidade == modalidade:
+                            if modalidade not in participacao:
+                                participacao.append(modalidade)
+                            tot = (atleta.modality[i].medals_gold + atleta.modality[i].medals_silver + atleta.modality[i].medals_bronze)
+                            if tot > 0:
+                                if modalidade not in ganhou_medalhas:
+                                    ganhou_medalhas.append(modalidade)
+                            else:
+                                if modalidade not in nao_ganhou:
+                                    nao_ganhou.append(modalidade)
+                for modalidade in sports:
+                    if modalidade not in participacao:
+                        nao_participou.append(modalidade)
+        # Das 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, quantas o Brasil teve participação?
+        print(f'\nDas 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, o Brasil teve participação em {len(participacao)} delas!')
+        # Em quais modalidades ganhou medalha(s)? 
+        print('\nO Brasil ganhou medalhas nas modalidades:')
+        print(', '.join(ganhou_medalhas))
+        '''for modalidade in ganhou_medalhas:
+            print(modalidade, sep=', ')'''
+        # Quais modalidades que o Brasil participou e não ganhou medalha(s)? 
+        print('Das modalidades em que o Brasil participou, ele não ganhou medalha em: ')
+        print(', '.join(nao_ganhou))
+        # Quantas e quais modalidades o Brasil não participou?
+        print(f'Das 22 modalidades, o Brasil não participou de {len(nao_participou)}, sendo elas:')
+        print(', '.join(nao_participou))
+    except FileNotFoundError:
+        None
