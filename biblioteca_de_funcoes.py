@@ -117,11 +117,12 @@ def excluir_modalidade(nome_arquivo, cpf_excluir):
         arquivo.seek(0)
         for line in new_file:
             line = jp.decode(line)
-            lista = line.modality
+        
             if line.cpf == cpf_excluir: # verifica se é o a linha do arquivo pra ser excluida
-                
+                lista = line.modality
                 if len(lista) == 1:
                     print('Não é possível excluir a unica modalidade em que o atleta participou!!!')
+                    arquivo.write(f'{jp.encode(line)}\n')
                 ## ainda exclui quando tem só 1
                 else:
                     modalidade_excluir = cadastrar_objeto(lista)
@@ -129,6 +130,7 @@ def excluir_modalidade(nome_arquivo, cpf_excluir):
                     line.modality = lista
                     # converter em uma lista, depois trocar a lista com o parametro
                     arquivo.write(f'{jp.encode(line)}\n')
+                    print('Modalidade excluído com sucesso!!!')
             else: 
                 arquivo.write(f'{jp.encode(line)}\n') # grava as linhas que não são a que deve ser excluida
         arquivo.truncate()
@@ -312,10 +314,7 @@ def relatorio4(nome_arquivo):
                                     texto_fem += f'Nome: {atleta.name}, Idade: {atleta.age}, Tipo de paralisia: {atleta.paralisy} - A Atleta não ganhou Medalhas\n'
 
             print(f'\n============= Modalidade: {modalidade} =============')
-            # Não teve nenhum atleta
-            # só houve atleta masculino
-            # ó houve atleta feminino
-            # houve os 2
+
             if len(texto_masc) == 0 and len(texto_fem) == 0:
                 print('Não Houve nenhum Atleta cadastrado nesta modalidade!')
             else:
@@ -356,14 +355,11 @@ def relatorio5(nome_arquivo):
                             else:
                                 if modalidade not in nao_ganhou:
                                     nao_ganhou.append(modalidade)
-        #print('\ndepois do for',participacao, ganhou_medalhas, nao_ganhou, nao_participou)
-
-        #o problema ta aqui=======================================                               
+                          
         for modalidade in sports:
             if modalidade not in participacao:
                 nao_participou.append(modalidade)
-        #print('\ndepois do 2 for:',participacao, ganhou_medalhas, nao_ganhou, nao_participou)
-        # Das 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, quantas o Brasil teve participação?
+
         print(f'\nDas 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, o Brasil teve participação em {len(participacao)} delas!')
         # Em quais modalidades ganhou medalha(s)? 
         print('\nO Brasil ganhou medalhas nas modalidades:')
