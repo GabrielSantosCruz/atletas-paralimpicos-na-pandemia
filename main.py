@@ -74,6 +74,7 @@ while option != 4:
 
     elif option == 1:
         limpar_tela(1)
+        cpfs = list_cpfs(nome_arquivo) # lista com todos cpfs já cadastrados, para validar a duplicidade
         exibir_cadastros(nome_arquivo)
         cpf_editar = validation_cpf_digit(input("Digite o cpf do Atleta para editá-lo: "))
         validation_excluir_cpf(cpf_editar, cpfs)
@@ -82,10 +83,11 @@ while option != 4:
 
     elif option == 2:
         limpar_tela(1)
-        print("Opções:\n[0] - Excluir cadastro completo\n[1] - Excluir Modalidade")
-        option_2 = validation_limited_int(1, input("Digite a opção: "))
+        print("Opções:\n[0] - Excluir cadastro completo\n[1] - Excluir Modalidade\n[2] - Voltar ao menu principal")
+        option_2 = validation_limited_int(2, input("Digite a opção: "))
 
         if option_2 == 0:
+            cpfs = list_cpfs(nome_arquivo) # lista com todos cpfs já cadastrados, para validar a duplicidade
             exibir_cadastros(nome_arquivo)
             cpf_excluir = validation_cpf_digit(input("Digite o cpf do Atleta para excluí-lo: "))
             validation_excluir_cpf(cpf_excluir, cpfs)
@@ -93,7 +95,8 @@ while option != 4:
             print('Cadastro excluído com sucesso!!!')
             input("Aperte ENTER para continuar!!!")
 
-        else:
+        elif option_2 == 1:
+            cpfs = list_cpfs(nome_arquivo) # lista com todos cpfs já cadastrados, para validar a duplicidade
             exibir_cadastros(nome_arquivo)
             cpf_excluir = validation_int(input('Digite o cpf do Atleta: '))
             validation_excluir_cpf(cpf_excluir, cpfs)

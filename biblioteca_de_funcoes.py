@@ -81,13 +81,13 @@ def list_cpfs(nome_arquivo): # função para criar uma lista com todos os cpfs d
 def validation_cpf(cpf, lista_cpfs): # valida se o cpf digitado já foi cadastrado
     while cpf in lista_cpfs:
         print('Cpf já cadastrado!')
-        cpf = int(input("Digite o cpf do Atleta: "))
+        cpf = input("Digite o cpf do Atleta: ")
     return int(cpf)
 
 def validation_excluir_cpf(cpf_excluir, lista_cpfs): # valida se o cpf digitado já foi cadastrado
     while cpf_excluir not in lista_cpfs:
         print('O cpf digitado não está cadastrado! Digite um cpf válido!')
-        cpf_excluir = int(input("Digite o cpf do Atletao: "))
+        cpf_excluir = input("Digite o cpf do Atleta: ")
     return int(cpf_excluir)
 
 def excluir_cadastro(nome_arquivo, cpf_excluir):
