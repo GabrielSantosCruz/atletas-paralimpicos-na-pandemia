@@ -1,7 +1,7 @@
 '''/*******************************************************************************
 Autor: Gabriel Santos Cruz
 Componente Curricular: Algoritmos I
-Concluido em: xx/11/2021
+Concluido em: 06/12/2021
 Declaro que este código foi elaborado por mim de forma individual e não contém nenhum
 trecho de código de outro colega ou de outro autor, tais como provindos de livros e
 apostilas, e páginas ou documentos eletrônicos da Internet. Qualquer trecho de código
@@ -98,14 +98,39 @@ while option != 4:
             cpf_excluir = validation_int(input('Digite o cpf do Atleta: '))
             validation_excluir_cpf(cpf_excluir, cpfs)
             excluir_modalidade(nome_arquivo, cpf_excluir)
-            print('Modalidade excluído com sucesso!!!')
             input("Aperte ENTER para continuar!!!")
 
     elif option == 3:
-        limpar_tela(1)
-        print('='*15,'Relatório','='*15)
-        relatorio1(nome_arquivo)
-        relatorio2(nome_arquivo)
-        relatorio3(nome_arquivo)
-        relatorio4(nome_arquivo)
-        input("Aperte ENTER para continuar!!!")
+        option_3 = 0
+        while option_3 != 5:
+            limpar_tela(1)
+            print('''Devido ao enorme tamanho dos relatórios, separamos eles entre as opções:\n
+[0] - A quantidade total de atletas que participaram dos Jogos Paraolímpicos por modalidade e sexo e o total geral;
+[1] - Relação dos atletas diagnosticados com Covid-19 por modalidade e sexo;
+[2] - Quadro de medalhas: quantitativo de medalhas de ouro, prata e bronze por modalidade, ordenadas primeiramente pelo número de medalhas de ouro, seguidas pelo número de medalhas de prata e de bronze;
+[3] - Um recorte por modalidade e por gênero (M/F) dos atletas que ganharam medalhas, com a informação do nome do atleta, idade, tipo de paralisia e medalha(s) conquistada(s)
+[4] - Das 22 modalidades disponíveis nos Jogos Paralímpicos de Tóquio, quantas o Brasil teve participação! Em quais modalidades ganhou medalha(s)! Quais modalidades que o Brasil participou e não ganhou medalha(s)! Quantas e quais modalidades o Brasil não participou! Apresentando as modalidades em ordem alfabética;
+
+[5] - Voltar para o menu principal\n''')
+            option_3 = validation_limited_int(5, input('Digite a opção: '))
+            if option_3 == 0:
+                limpar_tela(1)
+                print('='*30,'RELATÓRIO','='*30)
+                relatorio1(nome_arquivo)
+                input("Aperte ENTER para continuar!!!")
+            elif option_3 == 1:
+                print('='*30,'RELATÓRIO','='*30)
+                relatorio2(nome_arquivo)
+                input("Aperte ENTER para continuar!!!")
+            elif option_3 == 2:
+                print('='*30,'RELATÓRIO','='*30)
+                relatorio3(nome_arquivo)
+                input("Aperte ENTER para continuar!!!")
+            elif option_3 == 3:
+                print('='*30,'RELATÓRIO','='*30)
+                relatorio4(nome_arquivo)
+                input("Aperte ENTER para continuar!!!")
+            elif option_3 == 4:
+                print('='*30,'RELATÓRIO','='*30)
+                relatorio5(nome_arquivo)
+                input("Aperte ENTER para continuar!!!")
